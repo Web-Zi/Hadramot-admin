@@ -19,7 +19,7 @@ label{display:grid;gap:4px;font-weight:600}.pv{height:120px;border-radius:12px;b
 .ts{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--y);color:var(--m);font-weight:700;padding:8px 18px;border-radius:18px;z-index:20}
 </style></head><body><div id="app"></div>
 <script>
-const SB="https://apviifhixhzmnrpopdjy.supabase.co",KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFwdmlpZmhpeGh6bW5ycG9wZGp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ5ODg2ODMsImV4cCI6MjExMDU2NDY4M30.QyzTtcnH_XEGXZWM3h70UsjaXSR5LdsVJGZuEtpQVgY";
+const SB="https://apviifhixhzmnrpopdjy.supabase.co",KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFwdmlpZmhpeGh6bW5ycG9wZGp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ5ODg2ODMsImV4cCI6MjExMDU2NDY4M30.QyzTtcnH_XEGXZWM3h70UsjaXSR5LdsVJGZuEtpQVgY",H={apikey:KEY,Authorization:"Bearer "+KEY,"Content-Type":"application/json"};
 const $=s=>document.querySelector(s),esc=s=>String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
 const MSG={bad:"الرقم السري غير صحيح",locked:"تم القفل 15 دقيقة بعد محاولات خاطئة",fmt:"لازم 4 أرقام"};
 let pin="",C=[],I=[],cur=null;
@@ -30,7 +30,7 @@ const done=r=>{if(r=="ok"){toast("تم الحفظ");load()}else toast(MSG[r]||"�
 function shrink(f){return new Promise(res=>{const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const s=Math.min(1,560/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=im.width*s;c.height=im.height*s;c.getContext("2d").drawImage(im,0,0,c.width,c.height);res(c.toDataURL("image/jpeg",.72))};im.src=r.result};r.readAsDataURL(f)})}
 function login(){$("#app").innerHTML=`<div class="lg"><h1>إدارة منيو حضرموت</h1><input id="pn" type="password" inputmode="numeric" maxlength="4" placeholder="••••" autocomplete="off" aria-label="الرقم السري"><button class="p" id="go">دخول</button></div>`;
 const go=async()=>{pin=$("#pn").value;if(pin.length!=4)return toast("اكتب 4 أرقام");let r;try{r=await rpc("admin_check")}catch(e){return toast("تعذر الاتصال")}if(r=="ok")load();else toast(MSG[r]||"خطأ")};
-$("#go").onclick=go;$("#pn").onkeydown=e=>e.key=="Enter"&&go()}
+$("#go").onclick=go;$("#pn").onkeydown=e=>{if(e.key=="Enter")go()}}
 async function load(){try{[C,I]=await Promise.all([get("categories?select=*&order=sort"),get("items?select=*&order=sort")])}catch(e){return toast("تعذر التحميل")}
 if(!C.find(c=>c.id==cur))cur=C[0]?.id;draw()}
 function draw(){const c=C.find(x=>x.id==cur),its=I.filter(i=>i.cat==cur);
